@@ -1,0 +1,8 @@
+# macro file g4run.mac
+
+/run/initialize
+
+/tracking/verbose 1
+/event/verbose 0
+
+/run/beamOn 100000000
