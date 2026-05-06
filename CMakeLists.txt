@@ -70,22 +70,22 @@
                                        FAIL_REGULAR_EXPRESSION  " Exception; EXCEPTION;ERROR;Error"
                                        # TIMEOUT 6
                                        )
-    #----------------------
-    # Test TBBOnly
-
-    SET( test_name "test_TBBOnly" )
-    add_test(
-        NAME ${test_name}
-        COMMAND ${CMAKE_BINARY_DIR}/yourMainApplication g4run.mac TBBOnly
-        )
-
-    set_tests_properties(${test_name} PROPERTIES
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    )
-    SET_TESTS_PROPERTIES( ${test_name} PROPERTIES
-                                       FAIL_REGULAR_EXPRESSION  " Exception; EXCEPTION;ERROR;Error"
-                                       # TIMEOUT 6
-                                       )
+    # #----------------------
+    # # Test TBBOnly
+    #
+    # SET( test_name "test_TBBOnly" )
+    # add_test(
+    #     NAME ${test_name}
+    #     COMMAND ${CMAKE_BINARY_DIR}/yourMainApplication g4run.mac TBBOnly
+    #     )
+    #
+    # set_tests_properties(${test_name} PROPERTIES
+    #     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    # )
+    # SET_TESTS_PROPERTIES( ${test_name} PROPERTIES
+    #                                    FAIL_REGULAR_EXPRESSION  " Exception; EXCEPTION;ERROR;Error"
+    #                                    # TIMEOUT 6
+    #                                    )
     #----------------------
     # Test TaskingOnly
 

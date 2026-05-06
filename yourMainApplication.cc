@@ -72,10 +72,10 @@
 			runManager =  G4RunManagerFactory::CreateRunManager(G4RunManagerType::TaskingOnly);
 			runManager->SetNumberOfThreads(nThreads);
 		}
-		else if("TBBOnly" == G4RunManagerTypeString) {
-			runManager =  G4RunManagerFactory::CreateRunManager(G4RunManagerType::TBBOnly);
-			runManager->SetNumberOfThreads(nThreads);
-		}
+		// else if("TBBOnly" == G4RunManagerTypeString) {
+		// 	runManager =  G4RunManagerFactory::CreateRunManager(G4RunManagerType::TBBOnly);
+		// 	runManager->SetNumberOfThreads(nThreads);
+		// }
 		else{
 			return -2;
 		}
