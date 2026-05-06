@@ -19,8 +19,9 @@
 		macroFileName = argv[1];
 		}
 
-	    auto * runManager = G4RunManagerFactory::CreateRunManager();
-	    runManager->SetNumberOfThreads(1);
+	    auto * runManager = G4RunManagerFactory::CreateRunManager(G4RunManagerType::MTOnly);
+	    // runManager->SetNumberOfThreads(1);
+		runManager->SetVerboseLevel(2);
 	    
 	    YourDetectorConstruction* detector = new YourDetectorConstruction();
 		runManager->SetUserInitialization(detector);
