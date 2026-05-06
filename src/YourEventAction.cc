@@ -1,21 +1,16 @@
     #include "YourEventAction.hh"
-    #include "YourRunAction.hh"
-    #include "G4SystemOfUnits.hh"
+    #include "globals.hh"
 
-    YourEventAction::YourEventAction(YourRunAction * runAction):
-            G4UserEventAction(),
-            fRunAction(runAction){}
+    YourEventAction::YourEventAction():
+            G4UserEventAction(){}
 
     YourEventAction::~YourEventAction(){}
 
     void YourEventAction::BeginOfEventAction(const G4Event*){
-        fEdepPerEvent = 0;
+        G4cout << "Begin event action" << G4endl;
     }
 
     void YourEventAction::EndOfEventAction(const G4Event*){
-        G4cout << " Event Edep (in target) = "
-               << fEdepPerEvent / CLHEP::MeV
-               << " MeV"
+        G4cout << "End of Event action "
                << G4endl;
-        fRunAction->AddEventEdep(fEdepPerEvent);
     }

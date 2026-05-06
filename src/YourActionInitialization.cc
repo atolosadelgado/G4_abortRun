@@ -12,13 +12,13 @@
         YourPrimaryGeneratorAction* primaryAction = new YourPrimaryGeneratorAction(fDetector);
         SetUserAction(primaryAction);
 
-        YourRunAction * runAction = new YourRunAction(primaryAction);
+        YourRunAction * runAction = new YourRunAction();
         SetUserAction(runAction);
 
-        YourEventAction * eventAction = new YourEventAction(runAction);
+        YourEventAction * eventAction = new YourEventAction();
         SetUserAction(eventAction);
 
-        YourSteppingAction * stepAction = new YourSteppingAction(fDetector,eventAction);
+        YourSteppingAction * stepAction = new YourSteppingAction();
         SetUserAction(stepAction);
 
     }
