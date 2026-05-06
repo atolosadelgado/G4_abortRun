@@ -2,7 +2,7 @@
 
 /run/initialize
 
-/tracking/verbose 1
+/tracking/verbose 0
 /event/verbose 0
 
 /run/beamOn 100000000
