@@ -10,6 +10,8 @@
                 ~YourSteppingAction() override;
 
                 void UserSteppingAction(const G4Step * step) override;
+
+            int fAbortCounter{0};
         };
 
         #endif // YourSteppingAction_hh
