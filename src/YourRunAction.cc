@@ -1,6 +1,10 @@
     #include "YourRunAction.hh"
+    #include "G4Run.hh"
     #include "globals.hh"
 
+		#include "G4StateManager.hh"
+		#include "G4ApplicationState.hh"
+		
     YourRunAction::YourRunAction():
             G4UserRunAction(){}
 
@@ -10,6 +14,29 @@
     	G4cout << "Begin run action" << G4endl;
     }
 
-    void YourRunAction::EndOfRunAction(const G4Run *){
-        G4cout << "End run action" << G4endl;
+    void YourRunAction::EndOfRunAction(const G4Run * run){
+        	  auto stateManager = G4StateManager::GetStateManager();
+
+						auto stateToStr = [](G4ApplicationState s)
+						{
+								switch(s)
+								{
+										case G4State_PreInit:      return "PreInit";
+										case G4State_Init:         return "Init";
+										case G4State_Idle:         return "Idle";
+										case G4State_GeomClosed:   return "GeomClosed";
+										case G4State_EventProc:    return "EventProc";
+										case G4State_Quit:         return "Quit";
+										case G4State_Abort:        return "Abort";
+										default:                   return "Unknown";
+								}
+						};
+
+						// sometimes stateManager is nullptr in MT mode
+						auto state_str = stateManager? stateToStr(stateManager->GetCurrentState()) : "";
+						G4cout
+								<< "End run action"
+								<< " | runID=" << (run ? run->GetRunID() : -1)
+								<< " | state=" << state_str
+								<< G4endl;
     }

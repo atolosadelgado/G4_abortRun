@@ -3,6 +3,10 @@
     #include "G4Threading.hh"
     #include "G4Run.hh"
     #include "G4Event.hh"
+    #include "G4MTRunManager.hh"
+
+    #include "G4StateManager.hh"
+    #include "G4ApplicationState.hh"
 
     YourSteppingAction::YourSteppingAction():
                 G4UserSteppingAction()
@@ -13,6 +17,24 @@
     void YourSteppingAction::UserSteppingAction(const G4Step * ){
         if( std::ifstream("abort_stepping").good() )
         {
+	    			auto stateManager = G4StateManager::GetStateManager();
+						auto state = stateManager->GetCurrentState();
+
+						auto stateToStr = [](G4ApplicationState s)
+						{
+								switch(s)
+								{
+										case G4State_PreInit:      return "PreInit";
+										case G4State_Init:         return "Init";
+										case G4State_Idle:         return "Idle";
+										case G4State_GeomClosed:   return "GeomClosed";
+										case G4State_EventProc:    return "EventProc";
+										case G4State_Quit:         return "Quit";
+										case G4State_Abort:        return "Abort";
+										default:                   return "Unknown";
+								}
+						};
+
             auto rm = G4RunManager::GetRunManager();
 
             G4int tid = G4Threading::G4GetThreadId();
@@ -29,12 +51,14 @@
                 << " (" << (isWorker ? "worker" : "master") << ")"
                 << " | runID=" << runID
                 << " | eventID=" << eventID
+								<< " | state=" << stateToStr(state)
                 << " | fAbortCounter=" << fAbortCounter
                 << G4endl;
 
             ++fAbortCounter;
 
-            rm->AbortEvent();
-            rm->AbortRun(true);
+            //rm->AbortEvent();
+            //rm->AbortRun(true);
+	    			G4MTRunManager::GetMasterRunManager()->AbortRun(true);
         }
     }
