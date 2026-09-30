@@ -2,8 +2,10 @@
     #include "G4Run.hh"
     #include "globals.hh"
 
-		#include "G4StateManager.hh"
-		#include "G4ApplicationState.hh"
+	#include "G4StateManager.hh"
+	#include "G4ApplicationState.hh"
+	#include "G4RunManager.hh"
+	#include "G4MTRunManager.hh"
 		
     YourRunAction::YourRunAction():
             G4UserRunAction(){}
@@ -16,6 +18,17 @@
 
     void YourRunAction::EndOfRunAction(const G4Run * run){
         	  auto stateManager = G4StateManager::GetStateManager();
+			  G4RunManager* runManager = G4RunManager::GetRunManager();
+			  G4MTRunManager * runMasterMTManager = dynamic_cast<G4MTRunManager*>(G4MTRunManager::GetMasterRunManager());
+			  std::string ifAborted="Not applicable"; // serial
+			  // set ifAborted if running in MT
+			  if(runMasterMTManager)
+			  {
+				if(runMasterMTManager->IfAborted())
+					ifAborted="Run aborted";
+				else
+				    ifAborted="Run not aborted";
+			  }
 
 						auto stateToStr = [](G4ApplicationState s)
 						{
@@ -37,6 +50,7 @@
 						G4cout
 								<< "End run action"
 								<< " | runID=" << (run ? run->GetRunID() : -1)
-								<< " | state=" << state_str
+								<< " | runManagerState=" << ifAborted.c_str()
+								<< " | Geant4State=" << state_str
 								<< G4endl;
     }

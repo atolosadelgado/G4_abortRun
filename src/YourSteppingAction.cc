@@ -14,7 +14,7 @@
 
     YourSteppingAction::~YourSteppingAction(){}
 
-    void YourSteppingAction::UserSteppingAction(const G4Step * ){
+    void YourSteppingAction::UserSteppingAction(const G4Step * step){
         if( std::ifstream("abort_stepping").good() )
         {
 	    			auto stateManager = G4StateManager::GetStateManager();
@@ -46,12 +46,13 @@
             auto event = rm->GetCurrentEvent();
             G4int eventID = event ? event->GetEventID() : -1;
 
-            G4cout << "[ABORT] file detected | "
+            G4cout << "Stepping Action Message: [ABORT] file detected | "
                 << "threadID=" << tid
                 << " (" << (isWorker ? "worker" : "master") << ")"
                 << " | runID=" << runID
                 << " | eventID=" << eventID
-								<< " | state=" << stateToStr(state)
+                << " | stepID=" << step->GetTrack()->GetCurrentStepNumber()
+                << " | state=" << stateToStr(state)
                 << " | fAbortCounter=" << fAbortCounter
                 << G4endl;
 
@@ -59,6 +60,6 @@
 
             //rm->AbortEvent();
             //rm->AbortRun(true);
-	    			G4MTRunManager::GetMasterRunManager()->AbortRun(true);
+            G4MTRunManager::GetMasterRunManager()->AbortRun(false);
         }
     }
