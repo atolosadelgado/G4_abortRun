@@ -4,6 +4,8 @@
     #include "G4Run.hh"
     #include "G4Event.hh"
     #include "G4MTRunManager.hh"
+    #include "G4EventManager.hh"
+
 
     #include "G4StateManager.hh"
     #include "G4ApplicationState.hh"
@@ -15,7 +17,16 @@
     YourSteppingAction::~YourSteppingAction(){}
 
     void YourSteppingAction::UserSteppingAction(const G4Step * step){
-        if( std::ifstream("abort_stepping").good() )
+
+        G4int tid = G4Threading::G4GetThreadId();
+
+        bool abortOnlyThread0 = true;
+        bool isThisThreadAbortable=true;
+
+        if(abortOnlyThread0)
+            isThisThreadAbortable = (tid==0);
+
+        if( std::ifstream("abort_stepping").good())
         {
 	    			auto stateManager = G4StateManager::GetStateManager();
 						auto state = stateManager->GetCurrentState();
@@ -37,7 +48,6 @@
 
             auto rm = G4RunManager::GetRunManager();
 
-            G4int tid = G4Threading::G4GetThreadId();
             G4bool isWorker = G4Threading::IsWorkerThread();
 
             auto run = rm->GetCurrentRun();
@@ -60,6 +70,13 @@
 
             //rm->AbortEvent();
             //rm->AbortRun(true);
-            G4MTRunManager::GetMasterRunManager()->AbortRun(false);
+            if(isThisThreadAbortable){
+                G4cout << "Stepping Action Message: [ABORT] calling abort... " << G4endl;
+                G4MTRunManager::GetMasterRunManager()->AbortRun(false);
+                G4MTRunManager::GetRunManager()->AbortRun(false);
+                G4MTRunManager::GetRunManager()->AbortEvent();
+
+                G4EventManager::GetEventManager()->AbortCurrentEvent();
+            }
         }
     }
